@@ -1,16 +1,52 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>This Binding Functions</title>
 </head>
-
 <body>
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
-</script>
+  <h1>This Binding Implementations</h1>
 
+  <script>
+    // myCall implementation
+    Function.prototype.myCall = function(thisContext, ...args) {
+      // Bind 'thisContext' to 'this' of the original function, then invoke it with passed arguments
+      return this.apply(thisContext, args);
+    };
+
+    // myApply implementation
+    Function.prototype.myApply = function(thisContext, args) {
+      // Bind 'thisContext' to 'this' of the original function, then invoke it with passed arguments array
+      return this.apply(thisContext, args);
+    };
+
+    // myBind implementation
+    Function.prototype.myBind = function(thisContext, ...args) {
+      const fn = this;  // Save the reference to the original function
+
+      // Return a new function that will be bound to thisContext and will allow further arguments
+      return function(...newArgs) {
+        return fn.apply(thisContext, [...args, ...newArgs]);
+      };
+    };
+
+    // Sample usage
+    const obj = { num: 0 };
+
+    function logNums(x, y) {
+      console.log(this.num, x, y);
+    }
+
+    // Using myCall
+    logNums.myCall(obj, 1, 2); // Console logs: 0 1 2
+
+    // Using myApply
+    logNums.myApply(obj, [1, 2]); // Console logs: 0 1 2
+
+    // Using myBind
+    const boundFunction = logNums.myBind(obj, 1);
+    boundFunction(2); // Console logs: 0 1 2
+  </script>
 </body>
-
 </html>
